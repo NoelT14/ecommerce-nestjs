@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
+  ) {}
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepo.findOne({ where: { email: email.toLowerCase().trim() } });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findById(id: string): Promise<User | null> {
+    return this.userRepo.findOne({ where: { id } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findByActivationLink(token: string): Promise<User | null> {
+    return this.userRepo.findOne({ where: { activationLink: token } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async create(data: Partial<User>): Promise<User> {
+    const user = this.userRepo.create(data);
+    return this.userRepo.save(user);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(id: string, data: Partial<User>): Promise<void> {
+    await this.userRepo.update(id, data);
   }
 }

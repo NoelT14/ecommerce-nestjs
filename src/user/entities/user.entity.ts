@@ -4,7 +4,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedCol
 export class User {
 
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column('varchar', { name: 'first_name', length: 255, default: () => "''" })
     firstName: string;
@@ -24,13 +24,13 @@ export class User {
     password: string;
 
     @Column('varchar', { name: 'activation_link', nullable: true, length: 255 })
-    activationLink: string;
+    activationLink: string | null;
 
     @Column('boolean', { name: 'is_email_verified', default: false })
     isEmailVerified: boolean;
 
     @Column('varchar', { name: 'reset_password', nullable: true, length: 255 })
-    resetPassword: string;
+    resetPassword: string | null;
 
     @Column('varchar', { name: 'refresh_token', nullable: true, length: 255 })
     refreshToken: string | null;
