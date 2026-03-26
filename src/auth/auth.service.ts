@@ -175,4 +175,15 @@ export class AuthService {
     const hashed = await bcrypt.hash(refreshToken, 10);
     await this.userService.update(userId, { refreshToken: hashed });
   }
+
+  async guestToken(): Promise<{ guestToken: string }> {
+    const guestId = crypto.randomUUID()
+    const guestToken = await this.jwtService.signAsync({ guestId, isGuest: true as const },
+      {
+        secret: this.config.getOrThrow<string>('JWT_GUEST_SECRET'),
+        expiresIn: (this.config.get<string>('JWT_GUEST_EXPIRES_IN', '24h')) as never,
+      })
+
+    return { guestToken };
+  }
 }

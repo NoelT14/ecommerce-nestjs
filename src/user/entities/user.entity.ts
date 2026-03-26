@@ -1,3 +1,4 @@
+import { Role } from "src/auth/enums/role.enum";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('user')
@@ -20,6 +21,12 @@ export class User {
     })
     email: string;
 
+    @Column('varchar', { name: 'phone', nullable: true, length: 20 })
+    phone: string | null;
+
+    @Column('varchar', { name: 'avatar_url', nullable: true, length: 500 })
+    avatarUrl: string | null;
+
     @Column('varchar', { name: 'password', length: 255 })
     password: string;
 
@@ -34,6 +41,9 @@ export class User {
 
     @Column('varchar', { name: 'refresh_token', nullable: true, length: 255 })
     refreshToken: string | null;
+
+    @Column({ type: 'enum', enum: Role, default: Role.CUSTOMER })
+    role: Role;
 
     @CreateDateColumn({
         name: 'created_at',

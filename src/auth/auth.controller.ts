@@ -70,4 +70,10 @@ export class AuthController {
   resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto.token, dto.password);
   }
+
+  @Post('guest-token')
+  @HttpCode(HttpStatus.OK)
+  guestToken(){
+    return this.authService.guestToken()
+  }
 }
