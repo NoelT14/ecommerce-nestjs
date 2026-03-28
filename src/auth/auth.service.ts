@@ -39,17 +39,17 @@ export class AuthService {
     this.mailService.sendVerificationEmail(user.email, user.firstName, activationLink)
       .catch((err) => console.error('Verification email failed:', err));
 
-    const tokens = await this.generateTokens(user.id, user.email);
-    await this.storeRefreshToken(user.id, tokens.refreshToken);
 
     return {
-      ...tokens,
       message: 'Registration successful. Please verify your email.',
     };
   }
 
   async login(dto: LoginDto) {
     const user = await this.userService.findByEmail(dto.email);
+    if (!user?.isEmailVerified) {
+      throw new UnauthorizedException('Email not verified');
+    }
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const passwordMatches = await bcrypt.compare(dto.password, user.password);
@@ -92,7 +92,7 @@ export class AuthService {
 
     const resetToken = crypto.randomUUID();
 
-    // Sign a short-lived JWT wrapping the token — self-expiring, no cron needed
+    // Sign a short-lived JWT wrapping the token
     const signedToken = this.jwtService.sign(
       { sub: user.id, token: resetToken },
       {
