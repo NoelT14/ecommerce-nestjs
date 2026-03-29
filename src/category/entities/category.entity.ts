@@ -3,16 +3,16 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProductStatus } from '../enums/product-status.enum';
-import { Category } from '../../category/entities/category.entity';
 
-@Entity('product')
-export class Product {
+@Entity('category')
+@Tree('materialized-path')
+export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -25,31 +25,21 @@ export class Product {
   @Column('text', { nullable: true })
   description: string | null;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  price: string;
-
-  @Column('int', { name: 'stock_quantity', default: 0 })
-  stockQuantity: number;
-
-  //stock keeping unit
-  @Column('varchar', { length: 100, unique: true })
-  sku: string;
-
   @Column('varchar', { name: 'image_url', length: 500, nullable: true })
   imageUrl: string | null;
 
-  @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.DRAFT })
-  status: ProductStatus;
+  @Column('int', { name: 'sort_order', default: 0 })
+  sortOrder: number;
 
   @Column('boolean', { name: 'is_active', default: true })
   isActive: boolean;
 
-  @Column('uuid', { name: 'category_id', nullable: true })
-  categoryId: string | null;
+  //nese parent fshihet ,all children deleted 
+  @TreeParent({ onDelete: 'CASCADE' })
+  parent: Category | null;
 
-  @ManyToOne(() => Category, { onDelete: 'SET NULL', nullable: true })
-  @JoinColumn({ name: 'category_id' })
-  category: Category | null;
+  @TreeChildren()
+  children: Category[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;

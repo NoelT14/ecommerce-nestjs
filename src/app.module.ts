@@ -7,6 +7,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AddressModule } from './address/address.module';
 import { WishlistModule } from './wishlist/wishlist.module';
+import { RecentlyViewedModule } from './recently-viewed/recently-viewed.module';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -30,6 +33,9 @@ import { WishlistModule } from './wishlist/wishlist.module';
     AuthModule,
     AddressModule,
     WishlistModule,
+    RecentlyViewedModule,
+    CategoryModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
