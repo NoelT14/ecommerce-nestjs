@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductQueryDto } from './dto/product-query.dto';
+import { SetProductTagsDto } from './dto/set-product-tags.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -60,6 +62,19 @@ export class ProductController {
     @Body() dto: UpdateProductDto,
   ) {
     return this.productService.update(id, dto);
+  }
+
+  @ApiOperation({ summary: 'Replace all tags on a product (idempotent)', description: 'Admin only. Send empty array to clear all tags.' })
+  @ApiBearerAuth()
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @Put(':id/tags')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  setTags(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: SetProductTagsDto,
+  ) {
+    return this.productService.setTags(id, dto);
   }
 
   @ApiOperation({ summary: 'Soft-delete a product', description: 'Admin only. The record is retained with a deletedAt timestamp.' })

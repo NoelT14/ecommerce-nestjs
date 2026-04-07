@@ -10,6 +10,8 @@ import { WishlistModule } from './wishlist/wishlist.module';
 import { RecentlyViewedModule } from './recently-viewed/recently-viewed.module';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
+import { ProductAttributeModule } from './product-attribute/product-attribute.module';
+import { ProductTagModule } from './product-tag/product-tag.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { ProductModule } from './product/product.module';
     RecentlyViewedModule,
     CategoryModule,
     ProductModule,
+    ProductAttributeModule,
+    ProductTagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

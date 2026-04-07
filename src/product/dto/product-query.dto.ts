@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, MaxLength, Min } from 'class-validator';
 import { ProductStatus } from '../enums/product-status.enum';
+import { StockStatus } from '../enums/stock-status.enum';
 
 export class ProductQueryDto {
   @IsOptional()
@@ -28,4 +29,12 @@ export class ProductQueryDto {
   @IsOptional()
   @IsEnum(ProductStatus)
   status?: ProductStatus;
+
+  @IsOptional()
+  @IsEnum(StockStatus)
+  stockStatus?: StockStatus;
+
+  @IsOptional()
+  @IsUUID()
+  tagId?: string;
 }

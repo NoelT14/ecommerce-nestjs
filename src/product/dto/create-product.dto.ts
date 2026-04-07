@@ -1,5 +1,7 @@
 import {
+  IsArray,
   IsBoolean,
+  IsDate,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -12,6 +14,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ProductStatus } from '../enums/product-status.enum';
+import { StockStatus } from '../enums/stock-status.enum';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -61,4 +64,29 @@ export class CreateProductDto {
   @IsOptional()
   @IsUUID()
   categoryId?: string;
+
+  @IsOptional()
+  @IsEnum(StockStatus)
+  stockStatus?: StockStatus;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsPositive()
+  salePrice?: number;
+
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  saleStartsAt?: Date;
+
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  saleEndsAt?: Date;
+
+  @IsOptional()
+  @IsArray()
+  @IsUUID('4', { each: true })
+  tagIds?: string[];
 }
