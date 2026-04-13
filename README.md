@@ -6,18 +6,18 @@
 
 ---
 
-# E-Commerce NestJS — Tech Stack
+# E-Commerce NestJS - Tech Stack
 
 ## Backend Framework: NestJS v11
 A progressive Node.js framework built with TypeScript. Uses a modular architecture where each feature (auth, user, address, wishlist, recently-viewed) lives in its own module with controllers, services, and entities.
 
 **Key NestJS concepts used:**
-- `@Module` — organizes code into feature modules
-- `@Controller` / `@Get` / `@Post` — define REST API routes
-- `@Injectable` / Services — business logic layer
-- Guards (`JwtAuthGuard`, `JwtRefreshGuard`) — protect routes
-- DTOs with `class-validator` — validate incoming request bodies
-- Custom decorators (`@CurrentUser`) — extract data from requests
+- `@Module` - organizes code into feature modules
+- `@Controller` / `@Get` / `@Post` - define REST API routes
+- `@Injectable` / Services - business logic layer
+- Guards (`JwtAuthGuard`, `JwtRefreshGuard`) - protect routes
+- DTOs with `class-validator` - validate incoming request bodies
+- Custom decorators (`@CurrentUser`) - extract data from requests
 
 ---
 
@@ -40,17 +40,17 @@ Set via environment variables: `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD
 Maps TypeScript classes to database tables. Configured in `src/app.module.ts`.
 
 **Key concepts:**
-- `@Entity()` — marks a class as a DB table
-- `@Column()`, `@PrimaryGeneratedColumn()` — define columns
-- `Repository<Entity>` — used in services to query the DB
-- `synchronize: true` (non-production) — auto-syncs entity changes to the DB schema (no migrations needed in dev)
+- `@Entity()` - marks a class as a DB table
+- `@Column()`, `@PrimaryGeneratedColumn()` - define columns
+- `Repository<Entity>` - used in services to query the DB
+- `synchronize: true` (non-production) - auto-syncs entity changes to the DB schema (no migrations needed in dev)
 
 ---
 
 ## Authentication: JWT + Passport
-- `@nestjs/jwt` + `passport-jwt` — issues and validates JSON Web Tokens
+- `@nestjs/jwt` + `passport-jwt` - issues and validates JSON Web Tokens
 - Access token + Refresh token pattern
-- `bcrypt` — hashes passwords before storing
+- `bcrypt` - hashes passwords before storing
 - Email verification and password reset flows via `nodemailer`
 
 **Auth endpoints (`/auth`):**

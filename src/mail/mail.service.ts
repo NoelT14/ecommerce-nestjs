@@ -21,8 +21,8 @@ export class MailService {
   }
 
   async sendVerificationEmail(to: string, firstName: string, token: string): Promise<void> {
-    const appUrl = this.config.get<string>('APP_URL', 'http://localhost:3000');
-    const verifyUrl = `${appUrl}/auth/verify-email?token=${token}`;
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const verifyUrl = `${frontendUrl}/verify-email?token=${token}`;
 
     await this.transporter.sendMail({
       from: `"${this.config.get('MAIL_FROM_NAME', 'No Reply')}" <${this.config.getOrThrow('MAIL_FROM')}>`,
@@ -50,8 +50,8 @@ export class MailService {
   }
 
   async sendPasswordResetEmail(to: string, firstName: string, token: string): Promise<void> {
-    const appUrl = this.config.get<string>('APP_URL', 'http://localhost:3000');
-    const resetUrl = `${appUrl}/auth/reset-password?token=${token}`;
+    const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
 
     await this.transporter.sendMail({
       from: `"${this.config.get('MAIL_FROM_NAME', 'No Reply')}" <${this.config.getOrThrow('MAIL_FROM')}>`,

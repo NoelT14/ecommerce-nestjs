@@ -44,7 +44,7 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @HttpCode(HttpStatus.OK)
   refresh(@CurrentUser() user: User) {
-    return this.authService.refreshTokens(user.id, user.email);
+    return this.authService.refreshTokens(user);
   }
 
   @Get('verify-email')

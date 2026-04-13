@@ -20,7 +20,7 @@ export class ProductTagService {
   constructor(
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
-  ) {}
+  ) { }
 
   async create(dto: CreateTagDto): Promise<Tag> {
     const slug = dto.slug ?? toSlug(dto.name);
@@ -77,7 +77,7 @@ export class ProductTagService {
 
     Object.assign(tag, {
       name: dto.name ?? tag.name,
-      // Slug is only updated when explicitly provided — never auto-regenerated on update
+      // Slug is only updated when explicitly provided - never auto-regenerated on update
       slug: dto.slug ?? tag.slug,
       isActive: dto.isActive ?? tag.isActive,
     });

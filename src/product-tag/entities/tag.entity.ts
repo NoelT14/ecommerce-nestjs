@@ -22,7 +22,7 @@ export class Tag {
   @Column('boolean', { name: 'is_active', default: true })
   isActive: boolean;
 
-  // inverse side — Product owns the join table via @JoinTable
+  // inverse side - Product owns the join table via @JoinTable
   @ManyToMany('Product', 'tags')
   products: unknown[];
 

@@ -11,6 +11,7 @@ import { UserService } from '../user/user.service';
 import { MailService } from '../mail/mail.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -47,15 +48,13 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     const user = await this.userService.findByEmail(dto.email);
-    if (!user?.isEmailVerified) {
-      throw new UnauthorizedException('Email not verified');
-    }
     if (!user) throw new UnauthorizedException('Invalid credentials');
+    if (!user.isEmailVerified) throw new UnauthorizedException('Email not verified');
 
     const passwordMatches = await bcrypt.compare(dto.password, user.password);
     if (!passwordMatches) throw new UnauthorizedException('Invalid credentials');
 
-    const tokens = await this.generateTokens(user.id, user.email);
+    const tokens = await this.generateTokens(user);
     await this.storeRefreshToken(user.id, tokens.refreshToken);
 
     return tokens;
@@ -66,9 +65,9 @@ export class AuthService {
     return { message: 'Logged out successfully' };
   }
 
-  async refreshTokens(userId: string, email: string) {
-    const tokens = await this.generateTokens(userId, email);
-    await this.storeRefreshToken(userId, tokens.refreshToken);
+  async refreshTokens(user: User) {
+    const tokens = await this.generateTokens(user);
+    await this.storeRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -150,17 +149,24 @@ export class AuthService {
     return { message: 'Verification email sent' };
   }
 
-  private async generateTokens(userId: string, email: string) {
+  private async generateTokens(user: User) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: userId, email },
+        {
+          sub: user.id,
+          email: user.email,
+          role: user.role,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          isEmailVerified: user.isEmailVerified,
+        },
         {
           secret: this.config.getOrThrow<string>('JWT_ACCESS_SECRET'),
           expiresIn: (this.config.get<string>('JWT_ACCESS_EXPIRES_IN', '15m')) as never,
         },
       ),
       this.jwtService.signAsync(
-        { sub: userId, email },
+        { sub: user.id, email: user.email },
         {
           secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
           expiresIn: (this.config.get<string>('JWT_REFRESH_EXPIRES_IN', '7d')) as never,

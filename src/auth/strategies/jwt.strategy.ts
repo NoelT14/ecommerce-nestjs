@@ -7,6 +7,10 @@ import { UserService } from '../../user/user.service';
 export interface JwtPayload {
   sub: string;
   email: string;
+  role: number;
+  firstName: string;
+  lastName: string;
+  isEmailVerified: boolean;
 }
 
 @Injectable()
