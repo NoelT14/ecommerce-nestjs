@@ -8,7 +8,7 @@ import { DataSource, Repository, TreeRepository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { toSlug } from 'src/product/product.service';
+import { toSlug } from '../product/product.service';
 
 
 @Injectable()
