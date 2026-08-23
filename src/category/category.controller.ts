@@ -39,6 +39,13 @@ export class CategoryController {
     return this.categoryService.findTree();
   }
 
+  @ApiOperation({ summary: 'Get a category by slug' })
+  @ApiParam({ name: 'slug', type: String })
+  @Get('slug/:slug')
+  findBySlug(@Param('slug') slug: string) {
+    return this.categoryService.findBySlug(slug);
+  }
+
   @ApiOperation({ summary: 'Get a category by ID' })
   @ApiParam({ name: 'id', type: String, format: 'uuid' })
   @Get(':id')

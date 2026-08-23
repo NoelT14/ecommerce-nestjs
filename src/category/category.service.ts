@@ -71,6 +71,16 @@ export class CategoryService {
   }
 
   /**
+   * Finds a single category by its slug.
+   * Throws NotFoundException if no category with the given slug exists.
+   */
+  async findBySlug(slug: string): Promise<Category> {
+    const category = await this.categoryRepository.findOne({ where: { slug } });
+    if (!category) throw new NotFoundException(`Category with slug "${slug}" not found`);
+    return category;
+  }
+
+  /**
    * Returns a subtree rooted at the given category, including all nested descendants.
    * Useful for rendering a category branch in isolation.
    */
